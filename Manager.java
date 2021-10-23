@@ -161,33 +161,52 @@ public class Manager {
             return;
         }
 
-        double money = 0.0;
+        int money = 0;
         for (int i = 0; i < accounts.length; i++) {
             System.out.println("" + (i + 1) + ": " + accounts[i]);
             money += accounts[i].getMoney();
         }
-        System.out.printf("You have a total of $%.2f across %d account(s)!\n", money, accounts.length);
-        System.out.print("\nWould you like to make a deposit or withdrawal? [d/w/x] ");
+        System.out.printf("You have a total of $%d across %d account(s)!\n", money, accounts.length);
+        System.out.print("\nWould you like to make a deposit, withdrawal, or transfer? [d/w/t/x] ");
         String ans = input.nextLine().toLowerCase().substring(0, 1);
 
         if (ans.equals("d")) {
             System.out.println("Please enter the account number and deposit amount: ");
-        } else if (ans.equals("w")) {
+            String[] arr = input.nextLine().split(" ");
+            int num = Integer.parseInt(arr[0]) - 1;
+            double value = Double.parseDouble(arr[1]);
+
+            accounts[num].deposit(value);
+            System.out.printf("Deposited $%.2f to account %d.\n", value, num + 1);
+            }
+        else if (ans.equals("w")) {
             System.out.println("Please enter the account number and withdrawal amount: ");
+            String[] arr = input.nextLine().split(" ");
+            int num = Integer.parseInt(arr[0]) - 1;
+            double value = Double.parseDouble(arr[1]);
+
+            accounts[num].withdraw(value);
+            System.out.printf("Withdrew $%.2f from account %d.\n", value, num + 1);        
+        
+        } else if (ans.equals("t")) {
+            System.out.print("Please enter the account to transfer from: ");
+            String accountFrom = input.nextLine();
+            System.out.print("Please enter the account to transfer to: ");
+            String accountTo = input.nextLine();
+
+            System.out.print("Please enter the amount to transfer: ");
+            String arr = input.nextLine();
+            double value = Double.parseDouble(arr);
+
+            accounts[Integer.parseInt(accountFrom)-1].withdraw(value);
+            accounts[Integer.parseInt(accountTo)-1].deposit(value);
+            System.out.printf("Transfered $%.2f from account %s to %s,\n", value, accountFrom, accountTo);   
+            for (int i = 0; i < accounts.length; i++) {
+                System.out.println("" + (i + 1) + ": " + accounts[i]);
+            }
         } else {
             return;
         }
 
-        String[] arr = input.nextLine().split(" ");
-        int num = Integer.parseInt(arr[0]) - 1;
-        double value = Double.parseDouble(arr[1]);
-
-        if (ans.equals("w")) {
-            accounts[num].withdraw(value);
-            System.out.printf("Withdrew $%.2f from account %d.\n", value, num + 1);
-        } else {
-            accounts[num].deposit(value);
-            System.out.printf("Deposited $%.2f to account %d.\n", value, num + 1);
-        }
     }
 }
