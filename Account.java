@@ -22,15 +22,15 @@ public class Account {
         this.bank = bank;
     }
 
-    public void withdraw(int money) {
+    public void withdraw(double money) {
         this.money -= money;
     }
 
-    public void deposit(int money) {
+    public void deposit(double money) {
         this.money += money;
     }
 
-    public void transfer(Account other, int amount) {
+    public void transfer(Account other, double amount) {
         this.money -= amount;
         other.money += amount;
     }

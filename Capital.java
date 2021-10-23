@@ -2,13 +2,17 @@
 *@author Ritarka Samanta
 *@version 1.0
 */
-public class Capital {
+public abstract class Capital {
     private String name;
     private int value;
 
-    public void buy();
+    public void buy() {
+        return;
+    }
 
-    public void sell();
+    public void sell() {
+        return;
+    }
 
-    public String summarize();
+    public abstract String summarize();
 }

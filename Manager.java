@@ -9,14 +9,16 @@ public class Manager {
     private static Supplier[] suppliers = new Supplier[0];
     private static Employee[] employees = new Employee[0];
 
+    private static Scanner input = new Scanner(System.in);
+
     public static void main(String[] args) {
-        Scanner input = new Scanner(System.in);
 
         while (true) {
             System.out.println("\nWhat would you like to do?");
             System.out.println("1. Add an account/supplier/employee");
             System.out.println("2. Check accounts");
-            System.out.println("3. Exit the program");
+            System.out.println("3. Find parts");
+            System.out.println("4. Exit the program");
             int x = input.nextInt();
             input.nextLine();
 
@@ -46,6 +48,8 @@ public class Manager {
                 case 2:
                     checkAccounts();
                     break;
+                case 3:
+                    //
                 default:
                     System.out.print("Goodbye!");
                     System.exit(0);
@@ -100,10 +104,32 @@ public class Manager {
         }
 
         int money = 0;
-        for (Account a : accounts) {
-            System.out.println(a);
-            money += a.getMoney();
+        for (int i = 0; i < accounts.length; i++) {
+            System.out.println("" + (i + 1) + ": " + accounts[i]);
+            money += accounts[i].getMoney();
         }
-        System.out.printf("You have a total of %d dollars across %d accounts!\n", money, accounts.length);
+        System.out.printf("You have a total of $%d across %d account(s)!\n", money, accounts.length);
+        System.out.print("\nWould you like to make a deposit or withdrawal? [d/w/x] ");
+        String ans = input.nextLine().toLowerCase().substring(0, 1);
+
+        if (ans.equals("d")) {
+            System.out.println("Please enter the account number and deposit amount: ");
+        } else if (ans.equals("w")) {
+            System.out.println("Please enter the account number and withdrawal amount: ");
+        } else {
+            return;
+        }
+
+        String[] arr = input.nextLine().split(" ");
+        int num = Integer.parseInt(arr[0]) - 1;
+        double value = Double.parseDouble(arr[1]);
+
+        if (ans.equals("w")) {
+            accounts[num].withdraw(value);
+            System.out.printf("Withdrew $%.2f from account %d.\n", value, num + 1);
+        } else {
+            accounts[num].deposit(value);
+            System.out.printf("Deposited $%.2f to account %d.\n", value, num + 1);
+        }
     }
 }
