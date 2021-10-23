@@ -8,19 +8,17 @@ public class Account {
     private String name;
     private String bank;
 
-    private static int accounts = 0;
-
     /**
-    *@param money the amount of money the accoutn starys with
+    *@param money the amount of money the account starts with
     *@param rate the APY rate
     *@param the name of the account
     *@param the name of the bank
     */
     public Account(int money, double rate, String name, String bank) {
         this.money = money;
+        this.rate = rate;
         this.name = name;
         this.bank = bank;
-        accounts += 1;
     }
 
     public void withdraw(int money) {
@@ -36,7 +34,15 @@ public class Account {
         other.money += amount;
     }
 
+    public void accumulateInterest() {
+        this.money *= rate;
+    }
+
     public String toString() {
         return String.format("Account %s has %d dollars and makes %d every year.", name, money, money * rate);
+    }
+
+    public int getMoney() {
+        return money;
     }
 }
