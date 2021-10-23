@@ -1,3 +1,7 @@
+/**
+*@author Ritarka Samanta
+*@version 1.0
+*/
 public class Supplier {
     private String name;
     private String product;

@@ -1,9 +1,14 @@
-public abstract class Capital {
-    protected int value;
+/**
+*@author Ritarka Samanta
+*@version 1.0
+*/
+public class Capital {
+    private String name;
+    private int value;
 
-    public abstract void buy();
+    public void buy();
 
-    public abstract void sell();
+    public void sell();
 
-    public abstract String summarize();
+    public String summarize();
 }
