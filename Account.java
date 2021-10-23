@@ -11,7 +11,7 @@ public class Account {
     private static int accounts = 0;
 
     /**
-    *@param money the amount of money the accoutn starys with
+    *@param money the amount of money the account starts with
     *@param rate the APY rate
     *@param the name of the account
     *@param the name of the bank
