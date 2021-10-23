@@ -1,3 +1,4 @@
+import java.text.DecimalFormat;
 /**
 *@author Ritarka Samanta
 *@version 1.0
@@ -39,7 +40,8 @@ public class Account {
     }
 
     public String toString() {
-        return String.format("Account %s has %d dollars and makes %d every year.", name, money, money * rate);
+        DecimalFormat dollar = new DecimalFormat(".00");
+        return String.format("Account %s has $%d and makes $%s every year.", name, money, dollar.format(Math.round(money * rate)));
     }
 
     public int getMoney() {
