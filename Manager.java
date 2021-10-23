@@ -24,8 +24,15 @@ public class Manager {
 
             switch (x) {
                 case 1:
-                    System.out.println("Please input their information");
-                    String[] arr = input.nextLine().split(" ");
+                    System.out.print("Please input the following information:\nDeposit (USD): ");
+                    String deposit = input.nextLine();
+                    System.out.print("Rate: ");
+                    String rate = input.nextLine();
+                    System.out.print("Name: ");
+                    String name = input.nextLine();
+                    System.out.print("Bank: ");
+                    String bank = input.nextLine();
+                    String[] arr = {deposit, rate, name, bank};
                     if (arr.length == 4) {
                         Account a = new Account(Integer.parseInt(arr[0]), Double.parseDouble(arr[1]), arr[2], arr[3]);
                         if (add(a)) {
