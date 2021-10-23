@@ -1,4 +1,7 @@
+import java.io.File;
 import java.util.Scanner;
+import java.io.FileWriter;
+import java.io.IOException;
 
 /**
 *@author Ritarka Samanta
@@ -12,6 +15,33 @@ public class Manager {
     private static Scanner input = new Scanner(System.in);
 
     public static void main(String[] args) {
+
+        try {
+            File f = new File("save.txt");
+            Scanner reader = new Scanner(f);
+            if(!f.createNewFile()) {
+                System.out.println("Reload previous session? [Y/n]");
+                String ans = input.nextLine().toLowerCase().substring(0, 1);
+                if (ans.equals("y")) {
+                    while (reader.hasNextLine()) {
+                        String[] arr = reader.nextLine().split(" ");
+                        if (arr.length == 4) {
+                            Account a = new Account(Double.parseDouble(arr[0]), Double.parseDouble(arr[1]), arr[2], arr[3]);
+                            add(a);
+                        } else if (arr.length == 3) {
+                            Supplier s = new Supplier(arr[0], arr[1], arr[2]);
+                            add(s);
+                        } else if (arr.length == 2) {
+                            Employee e = new Employee(arr[0], Double.parseDouble(arr[1]));
+                            add(e);
+                        }
+                    }
+                    reader.close();
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         while (true) {
             System.out.println("\nWhat would you like to do?");
@@ -27,9 +57,9 @@ public class Manager {
                     System.out.println("Please input their information");
                     String[] arr = input.nextLine().split(" ");
                     if (arr.length == 4) {
-                        Account a = new Account(Integer.parseInt(arr[0]), Double.parseDouble(arr[1]), arr[2], arr[3]);
+                        Account a = new Account(Double.parseDouble(arr[0]), Double.parseDouble(arr[1]), arr[2], arr[3]);
                         if (add(a)) {
-                            System.out.printf("Added %s account with $%d.\n", arr[2], Integer.parseInt(arr[0]));
+                            System.out.printf("Added %s account with $%.2f.\n", arr[2], Double.parseDouble(arr[0]));
                         }
                     } else if (arr.length == 3) {
                         Supplier s = new Supplier(arr[0], arr[1], arr[2]);
@@ -37,7 +67,7 @@ public class Manager {
                             System.out.printf("Added supplier %s from %s.\n", arr[0], arr[2]);
                         }
                     } else if (arr.length == 2) {
-                        Employee e = new Employee(arr[0], Integer.parseInt(arr[1]));
+                        Employee e = new Employee(arr[0], Double.parseDouble(arr[1]));
                         if (add(e)) {
                             System.out.printf("Employee %s added.\n", arr[0]);
                         }
@@ -51,8 +81,26 @@ public class Manager {
                 case 3:
                     //
                 default:
-                    System.out.print("Goodbye!");
-                    System.exit(0);
+
+                    try {
+                        File f = new File("save.txt");
+                        f.createNewFile();
+
+                        FileWriter w = new FileWriter("save.txt");
+
+                        for (Account a : accounts) {
+                            w.write(a.summary());
+                        }
+
+                        w.close();
+
+                        System.out.print("Goodbye!");
+                        System.exit(0);
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    
             }
             
         }
@@ -97,18 +145,21 @@ public class Manager {
         return true;
     }
 
+    /**
+     * Check finances and make deposits/withdrawls
+     */
     private static void checkAccounts() {
         if (accounts.length == 0) {
             System.out.println("You currently have no open accounts.");
             return;
         }
 
-        int money = 0;
+        double money = 0.0;
         for (int i = 0; i < accounts.length; i++) {
             System.out.println("" + (i + 1) + ": " + accounts[i]);
             money += accounts[i].getMoney();
         }
-        System.out.printf("You have a total of $%d across %d account(s)!\n", money, accounts.length);
+        System.out.printf("You have a total of $%.2f across %d account(s)!\n", money, accounts.length);
         System.out.print("\nWould you like to make a deposit or withdrawal? [d/w/x] ");
         String ans = input.nextLine().toLowerCase().substring(0, 1);
 

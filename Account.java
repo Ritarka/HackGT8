@@ -1,10 +1,11 @@
 import java.text.DecimalFormat;
+
 /**
 *@author Ritarka Samanta
 *@version 1.0
 */
 public class Account {
-    private int money;
+    private double money;
     private double rate;
     private String name;
     private String bank;
@@ -15,36 +16,68 @@ public class Account {
     *@param the name of the account
     *@param the name of the bank
     */
-    public Account(int money, double rate, String name, String bank) {
+    public Account(double money, double rate, String name, String bank) {
         this.money = money;
         this.rate = rate;
         this.name = name;
         this.bank = bank;
     }
 
+    /**
+     * Withdraw some money
+     * @param money to be withdrawn
+     */
     public void withdraw(double money) {
         this.money -= money;
     }
 
+    /**
+     * Deposit some money
+     * @param money to be deposited
+     */
     public void deposit(double money) {
         this.money += money;
     }
 
+    /**
+     * Transfer money from one account to another
+     * @param other the account to be transferred to
+     * @param amount the amount of money to be transferred
+     */
     public void transfer(Account other, double amount) {
         this.money -= amount;
         other.money += amount;
     }
 
+    /**
+     * Calling this function makes an account gain interest
+     */
     public void accumulateInterest() {
         this.money *= rate;
     }
 
+    /**
+     * String summary of every Account object
+     */
     public String toString() {
         DecimalFormat dollar = new DecimalFormat(".00");
-        return String.format("Account %s has $%d and makes $%s every year.", name, money, dollar.format(Math.round(money * rate)));
+        return String.format("Account %s has $%.2f and makes $%s every year.", name, money, dollar.format(Math.round(money * rate)));
     }
 
-    public int getMoney() {
+    /**
+     * For internal summarizing purposes
+     * @return a string with all instance variables
+     */
+    public String summary() {
+        return String.format("%f %f %s %s\n", money, rate, name, bank);
+    }
+
+
+    /**
+     * Getter method
+     * @return the amount of money in the account
+     */
+    public double getMoney() {
         return money;
     }
 }
