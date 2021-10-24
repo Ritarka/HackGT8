@@ -26,9 +26,11 @@ public class Employee {
     public String getName() {
         return name;
     }
+    
     public String summary() {
         return String.format("%s %f", name, salary);
     }
+
     public void payEmployee(double pay) {
         salary += pay;
     }
