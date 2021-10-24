@@ -50,7 +50,7 @@ public class Manager {
             System.out.println("\nWhat would you like to do?");
             System.out.println("1. Add an account/supplier/employee");
             System.out.println("2. Check accounts");
-            System.out.println("3. Find parts");
+            System.out.println("3. Manage Supplies");
             System.out.println("4. Exit the program");
             int x = input.nextInt();
             input.nextLine();
@@ -104,7 +104,8 @@ public class Manager {
                     checkAccounts();
                     break;
                 case 3:
-                    //
+                    manageSupplies();
+                    break;
                 default:
 
                     try {
@@ -220,6 +221,7 @@ public class Manager {
             f.createNewFile();
             FileWriter w = new FileWriter("save.txt");
             w.append("" + logs + ": " + logger);
+            w.close();
             logs++;
             System.out.printf(logger);
         } catch (IOException e) {
@@ -227,14 +229,38 @@ public class Manager {
         }
     }
 
+    private static void manageSupplies() {
+        for (Supplier s : suppliers) {
+            System.out.println(s);
+        }
+        System.out.println("What would you like to buy?");
+        String ans = input.nextLine();
+        for (Supplier s : suppliers) {
+            if (ans.equals(s.getProduct())) {
+                System.out.printf("How many %s would you like to buy.\n", ans);
+                int amount = input.nextInt();
+                input.nextLine();
+
+                double cost = amount * s.getCost();
+                for (int i = 0; i < accounts.length; i++) {
+                    System.out.println("" + i + ": " + accounts[i]);
+                }
+                System.out.printf("Your total will be %d, which account would you like to use?.\n", cost);
+
+                int accountNum = input.nextInt();
+                accounts[accountNum - 1].withdraw(cost);
+                log(String.format("%d of %s was bought for %.2f using account %d", amount, s.getProduct(), cost, accountNum));
+            }
+        }
+        System.out.printf("There are no suppliers selling %s.\n", ans);
     private static void payEmployees() {
         System.out.print("Please enter the names of the employees, separated by commas: ");
         String employees = input.nextLine();
         String employeeList[] = employees.split(" ");
         for (int i = 0; i < accounts.size(); i++) {
-                for(String employee : employeeList){
-                    if(employee == employees[i].){
-               }
+             for(String employee : employeeList){
+                 if(employee == employees[i].){
+             }
         }
     }
 }
