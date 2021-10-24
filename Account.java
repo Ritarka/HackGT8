@@ -27,8 +27,13 @@ public class Account {
      * Withdraw some money
      * @param money to be withdrawn
      */
-    public void withdraw(double money) {
+    public boolean withdraw(double money) {
+        if (money > this.money) {
+            System.out.println("You don't have enough money for that");
+            return false;
+        }
         this.money -= money;
+        return true;
     }
 
     /**

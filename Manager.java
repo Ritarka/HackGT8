@@ -230,6 +230,14 @@ public class Manager {
     }
 
     private static void manageSupplies() {
+        if (accounts.size() == 0) {
+            System.out.println("You don't have any accounts open");
+            return;
+        }
+        if (suppliers.size() == 0) {
+            System.out.println("Noone is selling anything");
+            return;
+        }
         for (Supplier s : suppliers) {
             System.out.println(s);
         }
@@ -243,13 +251,15 @@ public class Manager {
 
                 double cost = amount * s.getCost();
                 for (int i = 0; i < accounts.size(); i++) {
-                    System.out.println("" + i + ": " + accounts.get(i));
+                    System.out.println("" + (i + 1) + ": " + accounts.get(i));
                 }
                 System.out.printf("Your total will be %.2f, which account would you like to use?.\n", cost);
 
                 int accountNum = input.nextInt();
-                accounts.get(accountNum - 1).withdraw(cost);
-                log(String.format("%d of %s was bought for %.2f using account %d", amount, s.getProduct(), cost, accountNum));
+                if (accounts.get(accountNum - 1).withdraw(cost)) {
+                    log(String.format("%d of %s was bought for %.2f using account %d", amount, s.getProduct(), cost, accountNum));
+                }
+                return;
             }
         }
         System.out.printf("There are no suppliers selling %s.\n", ans);
