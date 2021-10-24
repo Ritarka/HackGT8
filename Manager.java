@@ -137,6 +137,7 @@ public class Manager {
     private static boolean add(Object o) {
         if (o instanceof Account) {
             accounts.add((Account) o);
+            System.out.println((Account) o);
         } else if (o instanceof Supplier) {
             suppliers.add((Supplier) o);
         } else if (o instanceof Employee) {
@@ -159,6 +160,7 @@ public class Manager {
         }
 
         int money = 0;
+        String note = "";
         for (int i = 0; i < accounts.size(); i++) {
             System.out.println("" + (i + 1) + ": " + accounts.get(i));
             money += accounts.get(i).getMoney();
@@ -242,24 +244,26 @@ public class Manager {
                 input.nextLine();
 
                 double cost = amount * s.getCost();
-                for (int i = 0; i < accounts.length; i++) {
-                    System.out.println("" + i + ": " + accounts[i]);
+                for (int i = 0; i < accounts.size(); i++) {
+                    System.out.println("" + i + ": " + accounts.get(i));
                 }
                 System.out.printf("Your total will be %d, which account would you like to use?.\n", cost);
 
                 int accountNum = input.nextInt();
-                accounts[accountNum - 1].withdraw(cost);
+                accounts.get(accountNum - 1).withdraw(cost);
                 log(String.format("%d of %s was bought for %.2f using account %d", amount, s.getProduct(), cost, accountNum));
             }
         }
         System.out.printf("There are no suppliers selling %s.\n", ans);
+    }
     private static void payEmployees() {
         System.out.print("Please enter the names of the employees, separated by commas: ");
-        String employees = input.nextLine();
-        String employeeList[] = employees.split(" ");
+        String employeeList[] = input.nextLine().split(" ");
         for (int i = 0; i < accounts.size(); i++) {
              for(String employee : employeeList){
-                 if(employee == employees[i].){
+                 if(employee == employees.get(i).getName()){
+                    
+                 }
              }
         }
     }

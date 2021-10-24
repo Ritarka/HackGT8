@@ -23,4 +23,7 @@ public class Employee {
     public double getSalary() {
         return salary;
     }
+    public String getName() {
+        return name;
+    }
 }
