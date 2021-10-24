@@ -57,34 +57,50 @@ public class Manager {
 
             switch (x) {
                 case 1:
-                    System.out.print("Please input the following information:\nDeposit (USD): ");
-                    String deposit = input.nextLine();
-                    System.out.print("Rate: ");
-                    String rate = input.nextLine();
-                    System.out.print("Name: ");
-                    String name = input.nextLine();
-                    System.out.print("Bank: ");
-                    String bank = input.nextLine();
-                    String[] arr = {deposit, rate, name, bank};
-                    if (arr.length == 4) {
+                    System.out.print("Employee, Supplier, or Account?: ");
+                    String typeAccount = input.nextLine();
+                    System.out.println(typeAccount);
+                    
+                    if (typeAccount.equalsIgnoreCase("account")) {
+                        System.out.print("Please input the following information:\nDeposit (USD): ");
+                        String deposit = input.nextLine();
+                        System.out.print("Rate: ");
+                        String rate = input.nextLine();
+                        System.out.print("Name: ");
+                        String name = input.nextLine();
+                        System.out.print("Bank: ");
+                        String bank = input.nextLine();
+                        String[] arr = {deposit, rate, name, bank};
                         Account a = new Account(Double.parseDouble(arr[0]), Double.parseDouble(arr[1]), arr[2], arr[3]);
                         if (add(a)) {
-                            log(String.format("Added %s account with $%.2f.\n", arr[2], Double.parseDouble(arr[0])));
+                            System.out.printf("Added %s's account with $%.2f.\n", name, Double.parseDouble(deposit));
                         }
-                    } else if (arr.length == 3) {
-                        Supplier s = new Supplier(arr[0], arr[1], arr[2]);
+                    } else if (typeAccount.equalsIgnoreCase("supplier")) {
+                        System.out.print("Please input the following information:\nName: ");
+                        String name = input.nextLine();
+                        System.out.print("Product: ");
+                        String product = input.nextLine();
+                        System.out.print("Company: ");
+                        String company = input.nextLine();
+
+                        Supplier s = new Supplier(name, product, company);
                         if (add(s)) {
-                            log(String.format("Added supplier %s from %s.\n", arr[0], arr[2]));
+                            System.out.printf("Added supplier %s from %s.\n", name, company);
                         }
-                    } else if (arr.length == 2) {
-                        Employee e = new Employee(arr[0], Double.parseDouble(arr[1]));
+                    } else if (typeAccount.equalsIgnoreCase("employee")) {
+                        System.out.print("Please input the following information:\nName: ");
+                        String name = input.nextLine();
+                        System.out.print("Salary: ");
+                        String salary = input.nextLine();
+                        Employee e = new Employee(name, Double.parseDouble(salary));
                         if (add(e)) {
-                            log(String.format("Employee %s added.\n", arr[0]));
+                            System.out.printf("Employee %s added.\n", name);
                         }
                     } else {
                         System.out.println("Invalid input.");
                     }
                     break;
+
                 case 2:
                     checkAccounts();
                     break;
