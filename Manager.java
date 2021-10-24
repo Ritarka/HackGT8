@@ -15,6 +15,8 @@ public class Manager {
 
     private static Scanner input = new Scanner(System.in);
 
+    private static int logs = 1;
+
     public static void main(String[] args) {
 
         try {
@@ -41,7 +43,7 @@ public class Manager {
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
 
         while (true) {
@@ -67,17 +69,17 @@ public class Manager {
                     if (arr.length == 4) {
                         Account a = new Account(Double.parseDouble(arr[0]), Double.parseDouble(arr[1]), arr[2], arr[3]);
                         if (add(a)) {
-                            System.out.printf("Added %s account with $%.2f.\n", arr[2], Double.parseDouble(arr[0]));
+                            log(String.format("Added %s account with $%.2f.\n", arr[2], Double.parseDouble(arr[0])));
                         }
                     } else if (arr.length == 3) {
                         Supplier s = new Supplier(arr[0], arr[1], arr[2]);
                         if (add(s)) {
-                            System.out.printf("Added supplier %s from %s.\n", arr[0], arr[2]);
+                            log(String.format("Added supplier %s from %s.\n", arr[0], arr[2]));
                         }
                     } else if (arr.length == 2) {
                         Employee e = new Employee(arr[0], Double.parseDouble(arr[1]));
                         if (add(e)) {
-                            System.out.printf("Employee %s added.\n", arr[0]);
+                            log(String.format("Employee %s added.\n", arr[0]));
                         }
                     } else {
                         System.out.println("Invalid input.");
@@ -157,8 +159,8 @@ public class Manager {
             double value = Double.parseDouble(arr[1]);
 
             accounts.get(num).deposit(value);
-            System.out.printf("Deposited $%.2f to account %d.\n", value, num + 1);
-            }
+            note = String.format("Deposited $%.2f to account %d.\n", value, num);
+        }
         else if (ans.equals("w")) {
             System.out.println("Please enter the account number and withdrawal amount: ");
             String[] arr = input.nextLine().split(" ");
@@ -166,7 +168,7 @@ public class Manager {
             double value = Double.parseDouble(arr[1]);
 
             accounts.get(num).withdraw(value);
-            System.out.printf("Withdrew $%.2f from account %d.\n", value, num + 1);        
+            note = String.format("Withdrew $%.2f from account %d.\n", value, num);         
         
         } else if (ans.equals("t")) {
             System.out.print("Please enter the account to transfer from: ");
@@ -177,17 +179,16 @@ public class Manager {
             System.out.print("Please enter the amount to transfer: ");
             String arr = input.nextLine();
             double value = Double.parseDouble(arr);
-
             accounts.get(Integer.parseInt(accountFrom)-1).withdraw(value);
             accounts.get(Integer.parseInt(accountTo)-1).deposit(value);
-            System.out.printf("Transfered $%.2f from account %s to %s,\n", value, accountFrom, accountTo);   
+            note = String.format("Transfered $%.2f from account %s to %s,\n", value, accountFrom, accountTo); 
             for (int i = 0; i < accounts.size(); i++) {
                 System.out.println("" + (i + 1) + ": " + accounts.get(i));
             }
         } else {
             return;
         }
-
+        log(note);
     }
 
     public static void checkEmployees() {
@@ -197,5 +198,18 @@ public class Manager {
             wages += e.getSalary();
         }
         System.out.printf("Altogether, you pay them $%.2f./n", wages);
+    }
+
+    private static void log(String logger) {
+        try {
+            File f = new File("logs.txt");
+            f.createNewFile();
+            FileWriter w = new FileWriter("save.txt");
+            w.append("" + logs + ": " + logger);
+            logs++;
+            System.out.printf(logger);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
