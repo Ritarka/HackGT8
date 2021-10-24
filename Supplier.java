@@ -8,10 +8,11 @@ public class Supplier {
     private String company;
     private double cost;
 
-    public Supplier(String name, String product, String company) {
+    public Supplier(String name, String product, String company, double cost) {
         this.name = name;
         this.product = product;
         this.company = company;
+        this.cost = cost;
     }
 
     @Override

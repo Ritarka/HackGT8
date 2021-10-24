@@ -32,7 +32,7 @@ public class Manager {
                             Account a = new Account(Double.parseDouble(arr[0]), Double.parseDouble(arr[1]), arr[2], arr[3]);
                             add(a);
                         } else if (arr.length == 3) {
-                            Supplier s = new Supplier(arr[0], arr[1], arr[2]);
+                            Supplier s = new Supplier(arr[0], arr[1], arr[2], 0.0);
                             add(s);
                         } else if (arr.length == 2) {
                             Employee e = new Employee(arr[0], Double.parseDouble(arr[1]));
@@ -70,8 +70,7 @@ public class Manager {
                         String name = input.nextLine();
                         System.out.print("Bank: ");
                         String bank = input.nextLine();
-                        accounts.add(new Account(Double.parseDouble(deposit), Double.parseDouble(rate), name, bank));
-                        if (add(accounts)) {
+                        if (add(new Account(Double.parseDouble(deposit), Double.parseDouble(rate), name, bank))) {
                             System.out.printf("Added %s's account with $%.2f.\n", name, Double.parseDouble(deposit));
                         }
                     } else if (typeAccount.equalsIgnoreCase("supplier")) {
@@ -81,9 +80,10 @@ public class Manager {
                         String product = input.nextLine();
                         System.out.print("Company: ");
                         String company = input.nextLine();
+                        System.out.print("Cost: ");
+                        String cost = input.nextLine();
 
-                        suppliers.add(new Supplier(name, product, company));
-                        if (add(suppliers)) {
+                        if (add(new Supplier(name, product, company, Double.parseDouble(cost)))) {
                             System.out.printf("Added supplier %s from %s.\n", name, company);
                         }
                     } else if (typeAccount.equalsIgnoreCase("employee")) {
@@ -91,8 +91,7 @@ public class Manager {
                         String name = input.nextLine();
                         System.out.print("Salary: ");
                         String salary = input.nextLine();
-                        employees.add(new Employee(name, Double.parseDouble(salary)));
-                        if (add(employees)) {
+                        if (add(new Employee(name, Double.parseDouble(salary)))) {
                             System.out.printf("Employee %s added.\n", name);
                         }
                     } else {
@@ -137,7 +136,6 @@ public class Manager {
     private static boolean add(Object o) {
         if (o instanceof Account) {
             accounts.add((Account) o);
-            System.out.println((Account) o);
         } else if (o instanceof Supplier) {
             suppliers.add((Supplier) o);
         } else if (o instanceof Employee) {
@@ -247,7 +245,7 @@ public class Manager {
                 for (int i = 0; i < accounts.size(); i++) {
                     System.out.println("" + i + ": " + accounts.get(i));
                 }
-                System.out.printf("Your total will be %d, which account would you like to use?.\n", cost);
+                System.out.printf("Your total will be %.2f, which account would you like to use?.\n", cost);
 
                 int accountNum = input.nextInt();
                 accounts.get(accountNum - 1).withdraw(cost);
