@@ -70,9 +70,8 @@ public class Manager {
                         String name = input.nextLine();
                         System.out.print("Bank: ");
                         String bank = input.nextLine();
-                        String[] arr = {deposit, rate, name, bank};
-                        Account a = new Account(Double.parseDouble(arr[0]), Double.parseDouble(arr[1]), arr[2], arr[3]);
-                        if (add(a)) {
+                        accounts.add(new Account(Double.parseDouble(deposit), Double.parseDouble(rate), name, bank));
+                        if (add(accounts)) {
                             System.out.printf("Added %s's account with $%.2f.\n", name, Double.parseDouble(deposit));
                         }
                     } else if (typeAccount.equalsIgnoreCase("supplier")) {
@@ -83,8 +82,8 @@ public class Manager {
                         System.out.print("Company: ");
                         String company = input.nextLine();
 
-                        Supplier s = new Supplier(name, product, company);
-                        if (add(s)) {
+                        suppliers.add(new Supplier(name, product, company));
+                        if (add(suppliers)) {
                             System.out.printf("Added supplier %s from %s.\n", name, company);
                         }
                     } else if (typeAccount.equalsIgnoreCase("employee")) {
@@ -92,8 +91,8 @@ public class Manager {
                         String name = input.nextLine();
                         System.out.print("Salary: ");
                         String salary = input.nextLine();
-                        Employee e = new Employee(name, Double.parseDouble(salary));
-                        if (add(e)) {
+                        employees.add(new Employee(name, Double.parseDouble(salary)));
+                        if (add(employees)) {
                             System.out.printf("Employee %s added.\n", name);
                         }
                     } else {
@@ -125,8 +124,7 @@ public class Manager {
 
                     } catch (IOException e) {
                         e.printStackTrace();
-                    }
-                    
+                }
             }
             
         }
@@ -226,6 +224,17 @@ public class Manager {
             System.out.printf(logger);
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    private static void payEmployees() {
+        System.out.print("Please enter the names of the employees, separated by commas: ");
+        String employees = input.nextLine();
+        String employeeList[] = employees.split(" ");
+        for (int i = 0; i < accounts.size(); i++) {
+                for(String employee : employeeList){
+                    if(employee == employees[i].){
+               }
         }
     }
 }
