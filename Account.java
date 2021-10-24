@@ -56,9 +56,7 @@ public class Account {
         this.money *= rate;
     }
 
-    /**
-     * String summary of every Account object
-     */
+    @Override
     public String toString() {
         DecimalFormat dollar = new DecimalFormat(".00");
         return String.format("Account %s has $%.2f and makes $%s every year.", name, money, dollar.format(Math.round(money * rate)));
@@ -71,7 +69,6 @@ public class Account {
     public String summary() {
         return String.format("%f %f %s %s\n", money, rate, name, bank);
     }
-
 
     /**
      * Getter method

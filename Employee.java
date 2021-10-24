@@ -10,4 +10,17 @@ public class Employee {
         this.name = name;
         this.salary = salary;
     }
+
+    @Override
+    public String toString() {
+        return String.format("Employee %s makes $%f.\n", name, salary);
+    }
+
+    /**
+     * getter method for the salary of the employee
+     * @return the salary of the employee
+     */
+    public double getSalary() {
+        return salary;
+    }
 }

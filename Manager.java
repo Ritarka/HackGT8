@@ -156,6 +156,7 @@ public class Manager {
      * Check finances and make deposits/withdrawls
      */
     private static void checkAccounts() {
+
         if (accounts.length == 0) {
             System.out.println("You currently have no open accounts.");
             return;
@@ -189,5 +190,14 @@ public class Manager {
             accounts[num].deposit(value);
             System.out.printf("Deposited $%.2f to account %d.\n", value, num + 1);
         }
+    }
+
+    public static void checkEmployees() {
+        double wages = 0;
+        for (Employee e : employees) {
+            System.out.println(e);
+            wages += e.getSalary();
+        }
+        System.out.printf("Altogether, you pay them $%.2f./n", wages);
     }
 }
