@@ -50,7 +50,7 @@ public class Manager {
             System.out.println("\nWhat would you like to do?");
             System.out.println("1. Add an account/supplier/employee");
             System.out.println("2. Check accounts");
-            System.out.println("3. Manage Supplies");
+            System.out.println("3. Pay employees");
             System.out.println("4. Exit the program");
             int x = input.nextInt();
             input.nextLine();
@@ -103,7 +103,7 @@ public class Manager {
                     checkAccounts();
                     break;
                 case 3:
-                    manageSupplies();
+                    payEmployees();
                     break;
                 default:
 
@@ -255,14 +255,15 @@ public class Manager {
         System.out.printf("There are no suppliers selling %s.\n", ans);
     }
     private static void payEmployees() {
-        System.out.print("Please enter the names of the employees, separated by commas: ");
-        String employeeList[] = input.nextLine().split(" ");
-        for (int i = 0; i < accounts.size(); i++) {
-             for(String employee : employeeList){
-                 if(employee == employees.get(i).getName()){
-                    
-                 }
-             }
+        System.out.print("Please enter the name of the employee to pay?: ");
+        String employeeTemp = input.nextLine();
+        System.out.print("How much would you like to pay the employee?: ");
+        String pay = input.nextLine();
+        for(Employee person : employees){
+            if(person.getName().equalsIgnoreCase(employeeTemp)){
+                person.payEmployee(Double.parseDouble(pay));
+            }
         }
+        System.out.print(String.format("%s was paid $%s.", employeeTemp, pay));
     }
 }

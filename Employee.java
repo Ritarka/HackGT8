@@ -26,4 +26,8 @@ public class Employee {
     public String getName() {
         return name;
     }
+
+    public void payEmployee(double pay) {
+        salary += pay;
+    }
 }
