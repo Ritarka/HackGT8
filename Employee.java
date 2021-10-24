@@ -26,4 +26,8 @@ public class Employee {
     public String getName() {
         return name;
     }
+
+    public String summary() {
+        return String.format("%s %f", name, salary);
+    }
 }

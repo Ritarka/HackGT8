@@ -20,6 +20,10 @@ public class Supplier {
         return String.format("%s from %s sells %s at $%.2f each", name, company, product, cost);
     }
 
+    public String summary() {
+        return String.format("%s %s %s %f", name , product, company, name);
+    }
+
     public String getProduct() {
         return product;
     }

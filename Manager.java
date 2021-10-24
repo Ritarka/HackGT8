@@ -28,14 +28,14 @@ public class Manager {
                 if (ans.equals("y")) {
                     while (reader.hasNextLine()) {
                         String[] arr = reader.nextLine().split(" ");
-                        if (arr.length == 4) {
+                        if (arr[0].equals("Accounts:")) {
                             Account a = new Account(Double.parseDouble(arr[0]), Double.parseDouble(arr[1]), arr[2], arr[3]);
                             add(a);
-                        } else if (arr.length == 3) {
-                            Supplier s = new Supplier(arr[0], arr[1], arr[2], 0.0);
+                        } else if (arr[0].equals("Suppliers:")) {
+                            Supplier s = new Supplier(arr[1], arr[2], arr[3], Double.parseDouble(arr[4]));
                             add(s);
-                        } else if (arr.length == 2) {
-                            Employee e = new Employee(arr[0], Double.parseDouble(arr[1]));
+                        } else if (arr[0].equals("Employees:")) {
+                            Employee e = new Employee(arr[1], Double.parseDouble(arr[2]));
                             add(e);
                         }
                     }
@@ -114,7 +114,15 @@ public class Manager {
                         FileWriter w = new FileWriter("save.txt");
 
                         for (Account a : accounts) {
-                            w.write(a.summary());
+                            w.write("Accounts: " + a.summary());
+                        }
+
+                        for (Supplier s : suppliers) {
+                            w.write("Suppliers: " + s.summary());
+                        }
+
+                        for (Employee e : employees) {
+                            w.write("Employees: " + e.summary());
                         }
 
                         w.close();
@@ -219,7 +227,7 @@ public class Manager {
         try {
             File f = new File("logs.txt");
             f.createNewFile();
-            FileWriter w = new FileWriter("save.txt");
+            FileWriter w = new FileWriter("logs.txt");
             w.append("" + logs + ": " + logger);
             w.close();
             logs++;
