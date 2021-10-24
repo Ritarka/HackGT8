@@ -29,7 +29,7 @@ public class Manager {
                     while (reader.hasNextLine()) {
                         String[] arr = reader.nextLine().split(" ");
                         if (arr[0].equals("Accounts:")) {
-                            Account a = new Account(Double.parseDouble(arr[0]), Double.parseDouble(arr[1]), arr[2], arr[3]);
+                            Account a = new Account(Double.parseDouble(arr[1]), Double.parseDouble(arr[2]), arr[3], arr[4]);
                             add(a);
                         } else if (arr[0].equals("Suppliers:")) {
                             Supplier s = new Supplier(arr[1], arr[2], arr[3], Double.parseDouble(arr[4]));
@@ -51,7 +51,9 @@ public class Manager {
             System.out.println("1. Add an account/supplier/employee");
             System.out.println("2. Check accounts");
             System.out.println("3. Pay employees");
-            System.out.println("4. Exit the program");
+            System.out.println("4. Manage Supplies");
+            System.out.println("5. Access Logger");
+            System.out.println("6. Exit the program");
             int x = input.nextInt();
             input.nextLine();
 
@@ -104,6 +106,12 @@ public class Manager {
                     break;
                 case 3:
                     payEmployees();
+                    break;
+                case 4:
+                    manageSupplies();
+                    break;
+                case 5:
+                    readLogs();
                     break;
                 default:
 
@@ -182,7 +190,7 @@ public class Manager {
             double value = Double.parseDouble(arr[1]);
 
             accounts.get(num).deposit(value);
-            note = String.format("Deposited $%.2f to account %d.\n", value, num);
+            note = String.format("Deposited $%.2f to account %d.\n", value, num + 1);
         }
         else if (ans.equals("w")) {
             System.out.println("Please enter the account number and withdrawal amount: ");
@@ -191,7 +199,7 @@ public class Manager {
             double value = Double.parseDouble(arr[1]);
 
             accounts.get(num).withdraw(value);
-            note = String.format("Withdrew $%.2f from account %d.\n", value, num);         
+            note = String.format("Withdrew $%.2f from account %d.\n", value, num + 1);         
         
         } else if (ans.equals("t")) {
             System.out.print("Please enter the account to transfer from: ");
@@ -204,7 +212,7 @@ public class Manager {
             double value = Double.parseDouble(arr);
             accounts.get(Integer.parseInt(accountFrom)-1).withdraw(value);
             accounts.get(Integer.parseInt(accountTo)-1).deposit(value);
-            note = String.format("Transfered $%.2f from account %s to %s,\n", value, accountFrom, accountTo); 
+            note = String.format("Transfered $%.2f from account %s to %s,\n", value, accountFrom + 1, accountTo + 1); 
             for (int i = 0; i < accounts.size(); i++) {
                 System.out.println("" + (i + 1) + ": " + accounts.get(i));
             }
@@ -226,9 +234,11 @@ public class Manager {
     private static void log(String logger) {
         try {
             File f = new File("logs.txt");
-            f.createNewFile();
-            FileWriter w = new FileWriter("logs.txt");
-            w.append("" + logs + ": " + logger);
+            if (!f.exists()) {
+                f.createNewFile();
+            }
+            FileWriter w = new FileWriter("logs.txt", true);
+            w.write("" + logs + ": " + logger);
             w.close();
             logs++;
             System.out.printf(logger);
@@ -282,6 +292,20 @@ public class Manager {
                 person.payEmployee(Double.parseDouble(pay));
             }
         }
-        System.out.print(String.format("%s was paid $%s.", employeeTemp, pay));
+        log(String.format("%s was paid $%s.", employeeTemp, pay));
+    }
+
+    public static void readLogs() {
+        try {
+            File f = new File("logs.txt");
+            Scanner reader = new Scanner(f);
+            while (reader.hasNextLine()) {
+                System.out.println(reader.nextLine());
+            }
+            reader.close();
+        } catch (IOException e) {
+            return;
+        }
+
     }
 }

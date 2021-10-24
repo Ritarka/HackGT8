@@ -27,12 +27,11 @@ public class Employee {
         return name;
     }
 
-<<<<<<< HEAD
     public String summary() {
         return String.format("%s %f", name, salary);
-=======
+    }
+        
     public void payEmployee(double pay) {
         salary += pay;
->>>>>>> 7d4bc047e2691061f30aff868d708150d6654375
     }
 }
