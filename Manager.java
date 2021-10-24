@@ -2,15 +2,16 @@ import java.io.File;
 import java.util.Scanner;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
 *@author Ritarka Samanta
 *@version 1.0
 */
 public class Manager {
-    private static Account[] accounts = new Account[0];
-    private static Supplier[] suppliers = new Supplier[0];
-    private static Employee[] employees = new Employee[0];
+    private static ArrayList<Account> accounts = new ArrayList<>();
+    private static ArrayList<Supplier> suppliers = new ArrayList<>();
+    private static ArrayList<Employee> employees = new ArrayList<>();
 
     private static Scanner input = new Scanner(System.in);
 
@@ -56,34 +57,49 @@ public class Manager {
 
             switch (x) {
                 case 1:
-                    System.out.print("Please input the following information:\nDeposit (USD): ");
-                    String deposit = input.nextLine();
-                    System.out.print("Rate: ");
-                    String rate = input.nextLine();
-                    System.out.print("Name: ");
-                    String name = input.nextLine();
-                    System.out.print("Bank: ");
-                    String bank = input.nextLine();
-                    String[] arr = {deposit, rate, name, bank};
-                    if (arr.length == 4) {
-                        Account a = new Account(Double.parseDouble(arr[0]), Double.parseDouble(arr[1]), arr[2], arr[3]);
-                        if (add(a)) {
-                            log(String.format("Added %s account with $%.2f.\n", arr[2], Double.parseDouble(arr[0])));
+                    System.out.print("Employee, Supplier, or Account?: ");
+                    String typeAccount = input.nextLine();
+                    System.out.println(typeAccount);
+                    
+                    if (typeAccount.equalsIgnoreCase("account")) {
+                        System.out.print("Please input the following information:\nDeposit (USD): ");
+                        String deposit = input.nextLine();
+                        System.out.print("Rate: ");
+                        String rate = input.nextLine();
+                        System.out.print("Name: ");
+                        String name = input.nextLine();
+                        System.out.print("Bank: ");
+                        String bank = input.nextLine();
+                        accounts.add(new Account(Double.parseDouble(deposit), Double.parseDouble(rate), name, bank));
+                        if (add(accounts)) {
+                            System.out.printf("Added %s's account with $%.2f.\n", name, Double.parseDouble(deposit));
                         }
-                    } else if (arr.length == 3) {
-                        Supplier s = new Supplier(arr[0], arr[1], arr[2]);
-                        if (add(s)) {
-                            log(String.format("Added supplier %s from %s.\n", arr[0], arr[2]));
+                    } else if (typeAccount.equalsIgnoreCase("supplier")) {
+                        System.out.print("Please input the following information:\nName: ");
+                        String name = input.nextLine();
+                        System.out.print("Product: ");
+                        String product = input.nextLine();
+                        System.out.print("Company: ");
+                        String company = input.nextLine();
+
+                        suppliers.add(new Supplier(name, product, company));
+                        if (add(suppliers)) {
+                            System.out.printf("Added supplier %s from %s.\n", name, company);
                         }
-                    } else if (arr.length == 2) {
-                        Employee e = new Employee(arr[0], Double.parseDouble(arr[1]));
-                        if (add(e)) {
-                            log(String.format("Employee %s added.\n", arr[0]));
+                    } else if (typeAccount.equalsIgnoreCase("employee")) {
+                        System.out.print("Please input the following information:\nName: ");
+                        String name = input.nextLine();
+                        System.out.print("Salary: ");
+                        String salary = input.nextLine();
+                        employees.add(new Employee(name, Double.parseDouble(salary)));
+                        if (add(employees)) {
+                            System.out.printf("Employee %s added.\n", name);
                         }
                     } else {
                         System.out.println("Invalid input.");
                     }
                     break;
+
                 case 2:
                     checkAccounts();
                     break;
@@ -109,8 +125,7 @@ public class Manager {
 
                     } catch (IOException e) {
                         e.printStackTrace();
-                    }
-                    
+                }
             }
             
         }
@@ -121,33 +136,11 @@ public class Manager {
     */
     private static boolean add(Object o) {
         if (o instanceof Account) {
-            Account[] arr = accounts;
-            Account[] brr = new Account[arr.length + 1];
-            Account a = (Account)o;
-            for (int i = 0; i < arr.length; i++) {
-                brr[i] = arr[i];
-            }
-            brr[arr.length] = a;
-            accounts = brr;
+            accounts.add((Account) o);
         } else if (o instanceof Supplier) {
-            Supplier[] arr = suppliers;
-            Supplier[] brr = new Supplier[arr.length + 1];
-            Supplier a = (Supplier)o;
-            for (int i = 0; i < arr.length; i++) {
-                brr[i] = arr[i];
-            }
-            brr[arr.length] = a;
-            suppliers = brr;
+            suppliers.add((Supplier) o);
         } else if (o instanceof Employee) {
-            Employee[] arr = employees;
-            Employee[] brr = new Employee[arr.length + 1];
-            Employee a = (Employee)o;
-
-            for (int i = 0; i < arr.length; i++) {
-                brr[i] = arr[i];
-            }
-            brr[arr.length] = a;
-            employees = brr;
+            employees.add((Employee) o);
         } else {
             System.out.println("Invalid Object!");
             return false;
@@ -160,42 +153,37 @@ public class Manager {
      */
     private static void checkAccounts() {
 
-        if (accounts.length == 0) {
+        if (accounts.size() == 0) {
             System.out.println("You currently have no open accounts.");
             return;
         }
 
         int money = 0;
-        String note;
-        for (int i = 0; i < accounts.length; i++) {
-            System.out.println("" + (i + 1) + ": " + accounts[i]);
-            money += accounts[i].getMoney();
+        for (int i = 0; i < accounts.size(); i++) {
+            System.out.println("" + (i + 1) + ": " + accounts.get(i));
+            money += accounts.get(i).getMoney();
         }
-        System.out.printf("You have a total of $%d across %d account(s)!\n", money, accounts.length);
-        System.out.print("\nWould you like to make a deposit, withdrawal, or transfer? [d/w/t/x]: ");
+        System.out.printf("You have a total of $%d across %d account(s)!\n", money, accounts.size());
+        System.out.print("\nWould you like to make a deposit, withdrawal, or transfer? [d/w/t/x] ");
         String ans = input.nextLine().toLowerCase().substring(0, 1);
 
         if (ans.equals("d")) {
-            System.out.print("Please enter the account number: ");
-            String accNum = input.nextLine();
-            System.out.print("Please enter the deposit amount: ");
-            String withAmount = input.nextLine();
-            int num = Integer.parseInt(accNum);
-            double value = Double.parseDouble(withAmount);
+            System.out.println("Please enter the account number and deposit amount: ");
+            String[] arr = input.nextLine().split(" ");
+            int num = Integer.parseInt(arr[0]) - 1;
+            double value = Double.parseDouble(arr[1]);
 
-            accounts[num-1].deposit(value);
+            accounts.get(num).deposit(value);
             note = String.format("Deposited $%.2f to account %d.\n", value, num);
-            }
+        }
         else if (ans.equals("w")) {
-            System.out.print("Please enter the account number: ");
-            String accNum = input.nextLine();
-            System.out.print("Please enter the withdrawal amount: ");
-            String withAmount = input.nextLine();
-            int num = Integer.parseInt(accNum);
-            double value = Double.parseDouble(withAmount);
+            System.out.println("Please enter the account number and withdrawal amount: ");
+            String[] arr = input.nextLine().split(" ");
+            int num = Integer.parseInt(arr[0]) - 1;
+            double value = Double.parseDouble(arr[1]);
 
-            accounts[num-1].withdraw(value);
-            note = String.format("Withdrew $%.2f from account %d.\n", value, num);        
+            accounts.get(num).withdraw(value);
+            note = String.format("Withdrew $%.2f from account %d.\n", value, num);         
         
         } else if (ans.equals("t")) {
             System.out.print("Please enter the account to transfer from: ");
@@ -206,12 +194,11 @@ public class Manager {
             System.out.print("Please enter the amount to transfer: ");
             String arr = input.nextLine();
             double value = Double.parseDouble(arr);
-
-            accounts[Integer.parseInt(accountFrom)-1].withdraw(value);
-            accounts[Integer.parseInt(accountTo)-1].deposit(value);
-            note = String.format("Transfered $%.2f from account %s to %s,\n", value, accountFrom, accountTo);
-            for (int i = 0; i < accounts.length; i++) {
-                System.out.println("" + (i + 1) + ": " + accounts[i]);
+            accounts.get(Integer.parseInt(accountFrom)-1).withdraw(value);
+            accounts.get(Integer.parseInt(accountTo)-1).deposit(value);
+            note = String.format("Transfered $%.2f from account %s to %s,\n", value, accountFrom, accountTo); 
+            for (int i = 0; i < accounts.size(); i++) {
+                System.out.println("" + (i + 1) + ": " + accounts.get(i));
             }
         } else {
             return;
@@ -266,5 +253,14 @@ public class Manager {
             }
         }
         System.out.printf("There are no suppliers selling %s.\n", ans);
+    private static void payEmployees() {
+        System.out.print("Please enter the names of the employees, separated by commas: ");
+        String employees = input.nextLine();
+        String employeeList[] = employees.split(" ");
+        for (int i = 0; i < accounts.size(); i++) {
+             for(String employee : employeeList){
+                 if(employee == employees[i].){
+             }
+        }
     }
 }
