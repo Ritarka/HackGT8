@@ -2,15 +2,16 @@ import java.io.File;
 import java.util.Scanner;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
 *@author Ritarka Samanta
 *@version 1.0
 */
 public class Manager {
-    private static Account[] accounts = new Account[0];
-    private static Supplier[] suppliers = new Supplier[0];
-    private static Employee[] employees = new Employee[0];
+    private static ArrayList<Account> accounts = new ArrayList<>();
+    private static ArrayList<Supplier> suppliers = new ArrayList<>();
+    private static ArrayList<Employee> employees = new ArrayList<>();
 
     private static Scanner input = new Scanner(System.in);
 
@@ -118,33 +119,11 @@ public class Manager {
     */
     private static boolean add(Object o) {
         if (o instanceof Account) {
-            Account[] arr = accounts;
-            Account[] brr = new Account[arr.length + 1];
-            Account a = (Account)o;
-            for (int i = 0; i < arr.length; i++) {
-                brr[i] = arr[i];
-            }
-            brr[arr.length] = a;
-            accounts = brr;
+            accounts.add((Account) o);
         } else if (o instanceof Supplier) {
-            Supplier[] arr = suppliers;
-            Supplier[] brr = new Supplier[arr.length + 1];
-            Supplier a = (Supplier)o;
-            for (int i = 0; i < arr.length; i++) {
-                brr[i] = arr[i];
-            }
-            brr[arr.length] = a;
-            suppliers = brr;
+            suppliers.add((Supplier) o);
         } else if (o instanceof Employee) {
-            Employee[] arr = employees;
-            Employee[] brr = new Employee[arr.length + 1];
-            Employee a = (Employee)o;
-
-            for (int i = 0; i < arr.length; i++) {
-                brr[i] = arr[i];
-            }
-            brr[arr.length] = a;
-            employees = brr;
+            employees.add((Employee) o);
         } else {
             System.out.println("Invalid Object!");
             return false;
@@ -157,17 +136,17 @@ public class Manager {
      */
     private static void checkAccounts() {
 
-        if (accounts.length == 0) {
+        if (accounts.size() == 0) {
             System.out.println("You currently have no open accounts.");
             return;
         }
 
         int money = 0;
-        for (int i = 0; i < accounts.length; i++) {
-            System.out.println("" + (i + 1) + ": " + accounts[i]);
-            money += accounts[i].getMoney();
+        for (int i = 0; i < accounts.size(); i++) {
+            System.out.println("" + (i + 1) + ": " + accounts.get(i));
+            money += accounts.get(i).getMoney();
         }
-        System.out.printf("You have a total of $%d across %d account(s)!\n", money, accounts.length);
+        System.out.printf("You have a total of $%d across %d account(s)!\n", money, accounts.size());
         System.out.print("\nWould you like to make a deposit, withdrawal, or transfer? [d/w/t/x] ");
         String ans = input.nextLine().toLowerCase().substring(0, 1);
 
@@ -177,7 +156,7 @@ public class Manager {
             int num = Integer.parseInt(arr[0]) - 1;
             double value = Double.parseDouble(arr[1]);
 
-            accounts[num].deposit(value);
+            accounts.get(num).deposit(value);
             System.out.printf("Deposited $%.2f to account %d.\n", value, num + 1);
             }
         else if (ans.equals("w")) {
@@ -186,7 +165,7 @@ public class Manager {
             int num = Integer.parseInt(arr[0]) - 1;
             double value = Double.parseDouble(arr[1]);
 
-            accounts[num].withdraw(value);
+            accounts.get(num).withdraw(value);
             System.out.printf("Withdrew $%.2f from account %d.\n", value, num + 1);        
         
         } else if (ans.equals("t")) {
@@ -199,11 +178,11 @@ public class Manager {
             String arr = input.nextLine();
             double value = Double.parseDouble(arr);
 
-            accounts[Integer.parseInt(accountFrom)-1].withdraw(value);
-            accounts[Integer.parseInt(accountTo)-1].deposit(value);
+            accounts.get(Integer.parseInt(accountFrom)-1).withdraw(value);
+            accounts.get(Integer.parseInt(accountTo)-1).deposit(value);
             System.out.printf("Transfered $%.2f from account %s to %s,\n", value, accountFrom, accountTo);   
-            for (int i = 0; i < accounts.length; i++) {
-                System.out.println("" + (i + 1) + ": " + accounts[i]);
+            for (int i = 0; i < accounts.size(); i++) {
+                System.out.println("" + (i + 1) + ": " + accounts.get(i));
             }
         } else {
             return;
