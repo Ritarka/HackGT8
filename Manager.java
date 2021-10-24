@@ -50,7 +50,7 @@ public class Manager {
             System.out.println("\nWhat would you like to do?");
             System.out.println("1. Add an account/supplier/employee");
             System.out.println("2. Check accounts");
-            System.out.println("3. Manage Supplies");
+            System.out.println("3. Pay employees");
             System.out.println("4. Exit the program");
             int x = input.nextInt();
             input.nextLine();
@@ -103,7 +103,7 @@ public class Manager {
                     checkAccounts();
                     break;
                 case 3:
-                    manageSupplies();
+                    payEmployees();
                     break;
                 default:
 
@@ -238,6 +238,14 @@ public class Manager {
     }
 
     private static void manageSupplies() {
+        if (accounts.size() == 0) {
+            System.out.println("You don't have any accounts open");
+            return;
+        }
+        if (suppliers.size() == 0) {
+            System.out.println("Noone is selling anything");
+            return;
+        }
         for (Supplier s : suppliers) {
             System.out.println(s);
         }
@@ -251,26 +259,29 @@ public class Manager {
 
                 double cost = amount * s.getCost();
                 for (int i = 0; i < accounts.size(); i++) {
-                    System.out.println("" + i + ": " + accounts.get(i));
+                    System.out.println("" + (i + 1) + ": " + accounts.get(i));
                 }
                 System.out.printf("Your total will be %.2f, which account would you like to use?.\n", cost);
 
                 int accountNum = input.nextInt();
-                accounts.get(accountNum - 1).withdraw(cost);
-                log(String.format("%d of %s was bought for %.2f using account %d", amount, s.getProduct(), cost, accountNum));
+                if (accounts.get(accountNum - 1).withdraw(cost)) {
+                    log(String.format("%d of %s was bought for %.2f using account %d", amount, s.getProduct(), cost, accountNum));
+                }
+                return;
             }
         }
         System.out.printf("There are no suppliers selling %s.\n", ans);
     }
     private static void payEmployees() {
-        System.out.print("Please enter the names of the employees, separated by commas: ");
-        String employeeList[] = input.nextLine().split(" ");
-        for (int i = 0; i < accounts.size(); i++) {
-             for(String employee : employeeList){
-                 if(employee == employees.get(i).getName()){
-                    
-                 }
-             }
+        System.out.print("Please enter the name of the employee to pay?: ");
+        String employeeTemp = input.nextLine();
+        System.out.print("How much would you like to pay the employee?: ");
+        String pay = input.nextLine();
+        for(Employee person : employees){
+            if(person.getName().equalsIgnoreCase(employeeTemp)){
+                person.payEmployee(Double.parseDouble(pay));
+            }
         }
+        System.out.print(String.format("%s was paid $%s.", employeeTemp, pay));
     }
 }
