@@ -3,6 +3,7 @@ import java.util.Scanner;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
 
 /**
 *@author Ritarka Samanta
@@ -16,6 +17,7 @@ public class Manager {
     private static Scanner input = new Scanner(System.in);
 
     private static int logs = 1;
+    private static GregorianCalendar date = new GregorianCalendar();
 
     public static void main(String[] args) {
 
@@ -47,6 +49,12 @@ public class Manager {
         }
 
         while (true) {
+            System.out.println("\nToday is " + date.get(GregorianCalendar.MONTH) + ", " + date.get(GregorianCalendar.DAY_OF_MONTH) + ", " + date.get(GregorianCalendar.YEAR));
+            if (date.get(GregorianCalendar.DAY_OF_MONTH) == 1) {
+                for (Account account : accounts) {
+                    account.interest();
+                }
+            }
             System.out.println("\nWhat would you like to do?");
             System.out.println("1. Add an account/supplier/employee");
             System.out.println("2. Check accounts");
@@ -134,7 +142,7 @@ public class Manager {
                         e.printStackTrace();
                 }
             }
-            
+            date.add((GregorianCalendar.DAY_OF_MONTH), 1);
         }
     }
 

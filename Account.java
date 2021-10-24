@@ -82,4 +82,8 @@ public class Account {
     public double getMoney() {
         return money;
     }
+    public void interest() {
+        System.out.printf("%.2f interest accumulated\n", rate * money);
+        money += rate * money;
+    }
 }
